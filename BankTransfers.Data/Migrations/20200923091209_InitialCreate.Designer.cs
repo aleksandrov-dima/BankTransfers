@@ -4,14 +4,16 @@ using BankTransfers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankTransfers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200923091209_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,102 +122,6 @@ namespace BankTransfers.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BankTransfers.Data.Models.BankCommision", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int?>("BankId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BankTransferTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BankId");
-
-                    b.HasIndex("BankTransferTypeId");
-
-                    b.ToTable("BankCommisions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BankId = 1,
-                            BankTransferTypeId = 1,
-                            Rate = 0m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BankId = 1,
-                            BankTransferTypeId = 2,
-                            Rate = 1.0m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BankId = 2,
-                            BankTransferTypeId = 1,
-                            Rate = 0m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BankId = 2,
-                            BankTransferTypeId = 2,
-                            Rate = 2.0m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            BankId = 3,
-                            BankTransferTypeId = 1,
-                            Rate = 1.0m
-                        },
-                        new
-                        {
-                            Id = 6,
-                            BankId = 3,
-                            BankTransferTypeId = 2,
-                            Rate = 2.5m
-                        });
-                });
-
-            modelBuilder.Entity("BankTransfers.Data.Models.BankTransferType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BankTransferTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Внутренний перевод"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "На счет в другом банке"
-                        });
-                });
-
             modelBuilder.Entity("BankTransfers.Data.Models.Security.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -318,96 +224,6 @@ namespace BankTransfers.Data.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("BankTransfers.Data.Models.TransferCommision", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("RecipientAccountTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SenderAccountTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipientAccountTypeId");
-
-                    b.HasIndex("SenderAccountTypeId");
-
-                    b.ToTable("TransferCommisions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Rate = 0m,
-                            RecipientAccountTypeId = 1,
-                            SenderAccountTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Rate = 0m,
-                            RecipientAccountTypeId = 2,
-                            SenderAccountTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Rate = 0m,
-                            RecipientAccountTypeId = 3,
-                            SenderAccountTypeId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Rate = 2.0m,
-                            RecipientAccountTypeId = 1,
-                            SenderAccountTypeId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Rate = 3.0m,
-                            RecipientAccountTypeId = 2,
-                            SenderAccountTypeId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Rate = 4.0m,
-                            RecipientAccountTypeId = 3,
-                            SenderAccountTypeId = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Rate = 4.0m,
-                            RecipientAccountTypeId = 1,
-                            SenderAccountTypeId = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Rate = 6.0m,
-                            RecipientAccountTypeId = 2,
-                            SenderAccountTypeId = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Rate = 6.0m,
-                            RecipientAccountTypeId = 3,
-                            SenderAccountTypeId = 3
-                        });
-                });
-
             modelBuilder.Entity("BankTransfers.Data.Models.Account", b =>
                 {
                     b.HasOne("BankTransfers.Data.Models.AccountType", "AccountType")
@@ -421,21 +237,6 @@ namespace BankTransfers.Data.Migrations
                     b.Navigation("AccountType");
 
                     b.Navigation("Bank");
-                });
-
-            modelBuilder.Entity("BankTransfers.Data.Models.BankCommision", b =>
-                {
-                    b.HasOne("BankTransfers.Data.Models.Bank", "Bank")
-                        .WithMany("BankCommisions")
-                        .HasForeignKey("BankId");
-
-                    b.HasOne("BankTransfers.Data.Models.BankTransferType", "BankTransferType")
-                        .WithMany()
-                        .HasForeignKey("BankTransferTypeId");
-
-                    b.Navigation("Bank");
-
-                    b.Navigation("BankTransferType");
                 });
 
             modelBuilder.Entity("BankTransfers.Data.Models.Security.User", b =>
@@ -468,21 +269,6 @@ namespace BankTransfers.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BankTransfers.Data.Models.TransferCommision", b =>
-                {
-                    b.HasOne("BankTransfers.Data.Models.AccountType", "RecipientAccountType")
-                        .WithMany()
-                        .HasForeignKey("RecipientAccountTypeId");
-
-                    b.HasOne("BankTransfers.Data.Models.AccountType", "SenderAccountType")
-                        .WithMany()
-                        .HasForeignKey("SenderAccountTypeId");
-
-                    b.Navigation("RecipientAccountType");
-
-                    b.Navigation("SenderAccountType");
-                });
-
             modelBuilder.Entity("BankTransfers.Data.Models.AccountType", b =>
                 {
                     b.Navigation("Accounts");
@@ -491,8 +277,6 @@ namespace BankTransfers.Data.Migrations
             modelBuilder.Entity("BankTransfers.Data.Models.Bank", b =>
                 {
                     b.Navigation("Accounts");
-
-                    b.Navigation("BankCommisions");
                 });
 
             modelBuilder.Entity("BankTransfers.Data.Models.Security.Role", b =>

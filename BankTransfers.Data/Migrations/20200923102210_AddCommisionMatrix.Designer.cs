@@ -4,14 +4,16 @@ using BankTransfers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankTransfers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200923102210_AddCommisionMatrix")]
+    partial class AddCommisionMatrix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,6 +129,9 @@ namespace BankTransfers.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<int?>("BanTransferTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("BankId")
                         .HasColumnType("int");
 
@@ -148,43 +153,43 @@ namespace BankTransfers.Data.Migrations
                         new
                         {
                             Id = 1,
+                            BanTransferTypeId = 1,
                             BankId = 1,
-                            BankTransferTypeId = 1,
                             Rate = 0m
                         },
                         new
                         {
                             Id = 2,
+                            BanTransferTypeId = 2,
                             BankId = 1,
-                            BankTransferTypeId = 2,
                             Rate = 1.0m
                         },
                         new
                         {
                             Id = 3,
+                            BanTransferTypeId = 1,
                             BankId = 2,
-                            BankTransferTypeId = 1,
                             Rate = 0m
                         },
                         new
                         {
                             Id = 4,
+                            BanTransferTypeId = 2,
                             BankId = 2,
-                            BankTransferTypeId = 2,
                             Rate = 2.0m
                         },
                         new
                         {
                             Id = 5,
+                            BanTransferTypeId = 1,
                             BankId = 3,
-                            BankTransferTypeId = 1,
                             Rate = 1.0m
                         },
                         new
                         {
                             Id = 6,
+                            BanTransferTypeId = 2,
                             BankId = 3,
-                            BankTransferTypeId = 2,
                             Rate = 2.5m
                         });
                 });
