@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BankTransfers.Data;
+using BankTransfers.Data.Repositories;
+using BankTransfers.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +37,12 @@ namespace BankTransfers
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
+            
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
+
+            services.AddTransient<ITransactionService, TransactionService>();
             
             services.AddControllersWithViews();
         }
