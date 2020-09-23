@@ -34,15 +34,15 @@ namespace BankTransfers
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/UserAccount/Login");
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/UserAccount/Login");
                 });
             
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<ITransactionRepository, TransactionRepository>();
-            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
-            services.AddTransient<ITransactionService, TransactionService>();
+            services.AddScoped<ITransactionService, TransactionService>();
             
             services.AddControllersWithViews();
         }
