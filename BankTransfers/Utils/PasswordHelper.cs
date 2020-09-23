@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BankTransfers.Models.Security
+namespace BankTransfers.Utils
 {
     public class PasswordHelper
     {

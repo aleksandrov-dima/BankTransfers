@@ -4,14 +4,16 @@ using BankTransfers.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BankTransfers.Migrations
+namespace BankTransfers.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200922150958_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace BankTransfers.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
 
-            modelBuilder.Entity("BankTransfers.Models.Security.Role", b =>
+            modelBuilder.Entity("BankTransfers.Data.Models.Security.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +48,7 @@ namespace BankTransfers.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BankTransfers.Models.Security.User", b =>
+            modelBuilder.Entity("BankTransfers.Data.Models.Security.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,16 +84,16 @@ namespace BankTransfers.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BankTransfers.Models.Security.User", b =>
+            modelBuilder.Entity("BankTransfers.Data.Models.Security.User", b =>
                 {
-                    b.HasOne("BankTransfers.Models.Security.Role", "Role")
+                    b.HasOne("BankTransfers.Data.Models.Security.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("BankTransfers.Models.Security.Role", b =>
+            modelBuilder.Entity("BankTransfers.Data.Models.Security.Role", b =>
                 {
                     b.Navigation("Users");
                 });

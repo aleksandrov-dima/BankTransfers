@@ -1,4 +1,4 @@
-﻿using BankTransfers.Models.Security;
+﻿using BankTransfers.Data.Models.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankTransfers.Data
@@ -26,17 +26,13 @@ namespace BankTransfers.Data
 
             //добавляем для тестов пользователя с админской ролью
             string adminEmail = "admin@mail.ru";
-            string adminPassword = "SuperAdmin3";
-
-            //получаем хэш пароля (+ соль)
-            var hashedPassword = PasswordHelper.GetSaltedHashedPassword(adminPassword, out string salt);
 
             User adminUser = new User
             {
                 Id = 1,
                 Email = adminEmail,
-                Password = hashedPassword,
-                Salt = salt,
+                Password = "Kfe2prNZ+q8hlGnS//VRXKNBYeJoYrwUTqlamCPhNog=",//хэш пароля "SuperAdmin3"
+                Salt = "SBTSFagheVpqel2XlSuErw==",//хэш соли
                 RoleId = adminRole.Id
             };
 

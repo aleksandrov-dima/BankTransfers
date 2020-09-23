@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BankTransfers.Models.Security
+namespace BankTransfers.Data.Models.Security
 {
     public class Role
     {

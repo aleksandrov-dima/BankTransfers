@@ -1,4 +1,6 @@
-﻿namespace BankTransfers.Models.Security
+﻿using System.Collections.Generic;
+
+namespace BankTransfers.Data.Models.Security
 {
     public class User
     {
@@ -9,5 +11,12 @@
 
         public int? RoleId { get; set; }
         public Role Role { get; set; }
+        
+        public ICollection<Transaction> Transactions { get; set; }
+
+        public User()
+        {
+            Transactions = new List<Transaction>();
+        }
     }
 }

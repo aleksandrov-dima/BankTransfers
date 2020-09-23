@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BankTransfers.Migrations
+namespace BankTransfers.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {

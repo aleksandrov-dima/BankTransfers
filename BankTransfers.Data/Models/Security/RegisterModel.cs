@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BankTransfers.Models.Security
+namespace BankTransfers.Data.Models.Security
 {
-    public class LoginModel
+    public class RegisterModel
     {
         [Required(ErrorMessage = "Не указан Email")]
         public string Email { get; set; }
@@ -10,5 +10,9 @@ namespace BankTransfers.Models.Security
         [Required(ErrorMessage = "Не указан пароль")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Пароль введен неверно")]
+        public string ConfirmPassword { get; set; }
     }
 }
