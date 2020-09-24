@@ -1,0 +1,80 @@
+﻿@using BankTransfers.Controllers
+@model BankTransfers.Controllers.TransferDialogDto
+
+
+<div class="k-content">
+
+    @(Html.Kendo().Form<TransferDialogDto>()
+        .Name("exampleForm")
+        .HtmlAttributes(new { action = "/Account/CreateTransferTransaction", method = "POST" })
+        .Validatable(v =>
+        {
+            v.ValidateOnBlur(true);
+            v.ValidationSummary(vs => vs.Enable(true));
+        })
+        .Items(items =>
+        {
+            items.AddGroup()
+                .Label("Transfer Form")
+                .Items(i =>
+                {
+                    i.Add()
+                        .Field(f => f.FromAccountType)
+                        .Label(l => l.Text("Тип счета отправителя:"));
+                    i.Add()
+                        .Field(f => f.Amount)
+                        .Label(l => l.Text("Сумма:"))
+                        .Editor(e =>
+                        {
+                            e.NumericTextBox();
+                        });                    
+                    
+                    i.Add()
+                        .Field(f => f.BankId)
+                        .Label(l => l.Text("Банк получателя:"))
+                        .Editor(e =>
+                        {
+                            e.ComboBox()
+                                .HtmlAttributes(new { })
+                                .Placeholder("Select...")
+                                .DataTextField("Name")
+                                .DataValueField("BankId")
+                                .HtmlAttributes(new { style = "width:100%" })
+                                .Height(520)
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("ToolbarTemplate_Banks", "Account");
+                                    })
+                                    .ServerFiltering(true);
+                                });
+                        });
+                     
+                    i.Add()
+                        .Field(f => f.ToAccountId)
+                        .Label(l => l.Text("Счёт получателя:"))
+                        .Editor(e =>
+                        {
+                            e.ComboBox()
+                                .HtmlAttributes(new { })
+                                .Placeholder("Select...")
+                                .DataTextField("DisplayName")
+                                .DataValueField("AccountId")
+                                .HtmlAttributes(new { style = "width:100%" })
+                                .Height(520)
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetDropDown_Accounts", "Account");
+                                    })
+                                        .ServerFiltering(true);
+                                });
+                        });
+
+                });
+        })
+    )
+</div>
+

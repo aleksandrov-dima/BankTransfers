@@ -6,8 +6,8 @@ namespace BankTransfers.Data.Repositories
 {
     public interface IAccountRepository : IRepository<Account>
     {
-        Account GetAccount();
-
+        Account GetAccountById(int fromAccountId);
         IEnumerable<AccountGridListDto> GetAccountGridList();
+        IEnumerable<AccountDropDownListDto> GetAccountDropDownList();
     }
 }

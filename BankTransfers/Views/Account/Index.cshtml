@@ -7,24 +7,61 @@
 }
 
 <script type="text/javascript">
-        $(document).ready( function () {
-            var grid = $("#grid");
-            grid.find(".k-grid-toolbar").on("click", ".k-pager-refresh", function (e) {
+    $(document).ready(function() {
+        var grid = $("#grid");
+        grid.find(".k-grid-toolbar").on("click",
+            ".k-pager-refresh",
+            function(e) {
                 e.preventDefault();
                 grid.data("kendoGrid").dataSource.read();
             });
-        });
+    });
 
-        function bankChange() {
-            var value = this.value(),
-                grid = $("#grid").data("kendoGrid");
+    function bankChange() {
+        var value = this.value(),
+            grid = $("#grid").data("kendoGrid");
 
-            if (value) {
-                grid.dataSource.filter({ field: "BankId", operator: "eq", value: parseInt(value) });
-            } else {
-                grid.dataSource.filter({});
-            }
+        if (value) {
+            grid.dataSource.filter({ field: "BankId", operator: "eq", value: parseInt(value) });
+        } else {
+            grid.dataSource.filter({});
         }
+    }
+
+    function showTransferDialog(e) {
+        e.preventDefault();
+
+        var detailsTemplate = kendo.template($("#template").html());
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        var wnd = $("#Details").data("kendoWindow");
+
+        wnd.content(detailsTemplate(dataItem));
+        wnd.center().open();
+    }
+
+    function showExclude(e) {   
+        $(document.body).append('<div id="excludeWindow" class="k-rtl"></div>');
+        var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+        $('#excludeWindow').kendoWindow({
+            width: "80%",
+            title: 'excludeForm',
+            modal: true,
+            resizable: false,
+            content: "/Account/GetTransferDialog?fromAccountId=" + dataItem.AccountId + "&fromAccountType=" + dataItem.AccountType,
+            actions: [
+                "Close"
+            ],
+            refresh: function () {
+                $("#excludeWindow").data('kendoWindow').center();
+            },
+            close: function() {
+                setTimeout(function () {
+                    $('#excludeWindow').kendoWindow('destroy');
+                }, 200);
+            }
+        }).data('kendoWindow');
+    }
+
 </script>
 
 <script id="GridToolbarTemplate" type="text/x-kendo-template">
@@ -58,6 +95,7 @@
         columns.Bound(p => p.BankName);
         columns.Bound(p => p.AccountType);
         columns.Bound(p => p.Deposit).Width(150);
+        columns.Command(command => command.Custom("Перевод").Click("showExclude"));
     })
     .ToolBar(toolbar => {
         toolbar.ClientTemplateId("GridToolbarTemplate");
@@ -71,8 +109,17 @@
         .Model(model => model.Id(p => p.AccountId))
         .Read("Account_Read", "Account")
     )
-)
+    )
 
+@(Html.Kendo().Window().Name("TransferDialog")
+    .Title("Перевод")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Width(500)
+    .Height(400)
+    
+    )
 
 
 <style>

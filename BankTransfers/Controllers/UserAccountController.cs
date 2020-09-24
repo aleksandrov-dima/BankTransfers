@@ -54,7 +54,7 @@ namespace BankTransfers.Controllers
 
                     await Authenticate(user); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
                 else
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
@@ -85,7 +85,7 @@ namespace BankTransfers.Controllers
                 {
                     await Authenticate(user); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
 
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");

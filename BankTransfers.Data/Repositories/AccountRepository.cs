@@ -2,6 +2,7 @@
 using System.Linq;
 using BankTransfers.Data.Models;
 using BankTransfers.Data.Models.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankTransfers.Data.Repositories
 {
@@ -14,9 +15,11 @@ namespace BankTransfers.Data.Repositories
             _applicationDbContext = applicationDbContext;
         }
 
-        public Account GetAccount()
+        public Account GetAccountById(int fromAccountId)
         {
-            throw new System.NotImplementedException();
+            return _applicationDbContext.Accounts
+                .Include(i=>i.AccountType)
+                .First(a=>a.Id == fromAccountId);
         }
 
         public IEnumerable<AccountGridListDto> GetAccountGridList()
@@ -29,6 +32,21 @@ namespace BankTransfers.Data.Repositories
                 BankName = s.Bank.Name,
                 Deposit = s.Deposit
             }).OrderBy(o=>o.BankId);
+
+            return accountsList;
+        }
+
+        public IEnumerable<AccountDropDownListDto> GetAccountDropDownList()
+        {
+            var accountsList = GetAll()
+                .Include(i => i.AccountType)
+                .Include(i => i.Bank)
+                .Select(s => new AccountDropDownListDto
+                {
+                    AccountId = s.Id,
+                    DisplayName = $"{s.AccountType.Name} ({s.Bank.Name}), №{s.Id}, остаток:{s.Deposit}",
+                    BankId = s.BankId
+                }).OrderBy(o => o.BankId);
 
             return accountsList;
         }
