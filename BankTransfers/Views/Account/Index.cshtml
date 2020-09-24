@@ -1,0 +1,100 @@
+﻿@using BankTransfers.Data.Models.Dto
+@model BankTransfers.Data.Models.Account
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<script type="text/javascript">
+        $(document).ready( function () {
+            var grid = $("#grid");
+            grid.find(".k-grid-toolbar").on("click", ".k-pager-refresh", function (e) {
+                e.preventDefault();
+                grid.data("kendoGrid").dataSource.read();
+            });
+        });
+
+        function bankChange() {
+            var value = this.value(),
+                grid = $("#grid").data("kendoGrid");
+
+            if (value) {
+                grid.dataSource.filter({ field: "BankId", operator: "eq", value: parseInt(value) });
+            } else {
+                grid.dataSource.filter({});
+            }
+        }
+</script>
+
+<script id="GridToolbarTemplate" type="text/x-kendo-template">
+    <div class="refreshBtnContainer">
+        <a href="\\#" class="k-pager-refresh k-link k-button k-button-icon" title="Refresh"><span class="k-icon k-i-reload"></span></a>
+    </div>
+    <div class="toolbar">
+        <label class="bank-label" for="bank">Банк:</label>
+        @(Html.Kendo().DropDownList()
+            .Name("banks")
+            .OptionLabel("All")
+            .DataTextField("Name")
+            .DataValueField("BankId")
+            .AutoBind(false)
+            .Events(e => e.Change("bankChange"))
+            .HtmlAttributes(new { style = "width: 150px;" })
+            .DataSource(ds =>
+            {
+                ds.Read("ToolbarTemplate_Banks", "Account");
+            })
+            .ToClientTemplate()
+        )
+    </div>
+</script>
+
+@(Html.Kendo().Grid<AccountGridListDto>()
+    .Name("grid")
+    .Columns(columns => {
+        columns.Bound(p => p.AccountId).Visible(false).Width(100);
+        columns.Bound(p => p.BankId).Visible(false);
+        columns.Bound(p => p.BankName);
+        columns.Bound(p => p.AccountType);
+        columns.Bound(p => p.Deposit).Width(150);
+    })
+    .ToolBar(toolbar => {
+        toolbar.ClientTemplateId("GridToolbarTemplate");
+    })
+    .Height(500)
+    .Scrollable()
+    .Sortable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(false)
+        .Model(model => model.Id(p => p.AccountId))
+        .Read("Account_Read", "Account")
+    )
+)
+
+
+
+<style>
+
+    #grid .k-grid-toolbar {
+        padding: .6em 1.3em .6em .4em;
+    }
+
+    .bank-label {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+
+    #bank {
+        vertical-align: middle;
+    }
+
+    .refreshBtnContainer {
+        display: inline-block;
+    }
+
+    .toolbar {
+        float: right;
+    }
+</style>
