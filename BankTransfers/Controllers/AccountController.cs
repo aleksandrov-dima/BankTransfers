@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using BankTransfers.Data.Models;
 using BankTransfers.Data.Models.Dto;
 using BankTransfers.Data.Repositories;
+using BankTransfers.Service;
 using Kendo.Mvc.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Kendo.Mvc.UI;
@@ -15,11 +18,13 @@ namespace BankTransfers.Controllers
     {
         private readonly IBankRepository _bankRepository;
         private readonly IAccountRepository _accountRepository;
+        private readonly ITransactionService _transactionService;
 
-        public AccountController(IAccountRepository accountRepository, IBankRepository bankRepository)
+        public AccountController(IAccountRepository accountRepository, IBankRepository bankRepository, ITransactionService transactionService)
         {
             _accountRepository = accountRepository;
             _bankRepository = bankRepository;
+            _transactionService = transactionService;
         }
 
         public IActionResult Index()
@@ -47,15 +52,17 @@ namespace BankTransfers.Controllers
             return Json(accounts);
         }
 
-        public ActionResult GetTransferDialog(int fromAccountId, string fromAccountType)
+        public ActionResult GetTransferDialog(int fromAccountId)
         {
             var account = _accountRepository.GetAccountById(fromAccountId);
+            var userName = User.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
 
             var viewModel = new TransferDialogDto
             {
                 FromAccountId = fromAccountId,
                 FromAccountType = account.AccountType.Name,
-                BankId = 1
+                BankId = 1,
+                UserName = userName
             };
             return PartialView("TransferDialog", viewModel);
         }
@@ -63,17 +70,10 @@ namespace BankTransfers.Controllers
         [HttpPost]
         public ActionResult CreateTransferTransaction(TransferDialogDto transfer)
         {
-            return Json(Ok());
+            
+            _transactionService.TransferBetweenAccounts(transfer);
+
+            return RedirectToAction("Index");
         }
-    }
-
-    public class TransferDialogDto
-    {
-        public int FromAccountId { get; set; }
-        public string FromAccountType { get; set; }
-        public decimal Amount { get; set; }
-        public int? BankId { get; set; }
-
-        public int? ToAccountId { get; set; }
     }
 }

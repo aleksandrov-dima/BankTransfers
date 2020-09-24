@@ -15,11 +15,11 @@ namespace BankTransfers.Data.Repositories
             _applicationDbContext = applicationDbContext;
         }
 
-        public Account GetAccountById(int fromAccountId)
+        public Account GetAccountById(int accountId)
         {
             return _applicationDbContext.Accounts
                 .Include(i=>i.AccountType)
-                .First(a=>a.Id == fromAccountId);
+                .First(a=>a.Id == accountId);
         }
 
         public IEnumerable<AccountGridListDto> GetAccountGridList()

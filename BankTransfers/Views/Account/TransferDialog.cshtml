@@ -1,5 +1,6 @@
 ﻿@using BankTransfers.Controllers
-@model BankTransfers.Controllers.TransferDialogDto
+@using BankTransfers.Data.Models.Dto
+@model BankTransfers.Data.Models.Dto.TransferDialogDto
 
 
 <div class="k-content">
@@ -18,6 +19,8 @@
                 .Label("Transfer Form")
                 .Items(i =>
                 {
+                    i.Add()
+                        .Field(f => f.FromAccountId);
                     i.Add()
                         .Field(f => f.FromAccountType)
                         .Label(l => l.Text("Тип счета отправителя:"));
