@@ -197,6 +197,21 @@ namespace BankTransfers.Data
                 }
             };
             modelBuilder.Entity<BankCommision>().HasData(bankCommisions);
+
+            var accountList = new List<Account>()
+            {
+                new Account() {Id = 1, Deposit = 31000, AccountTypeId = 1, BankId = 1},
+                new Account() {Id = 2, Deposit = 25000, AccountTypeId = 2, BankId = 1},
+                new Account() {Id = 3, Deposit = 15020, AccountTypeId = 3, BankId = 1},
+                new Account() {Id = 4, Deposit = 5000, AccountTypeId = 1, BankId = 2},
+                new Account() {Id = 5, Deposit = 2000, AccountTypeId = 2, BankId = 2},
+                new Account() {Id = 6, Deposit = 100, AccountTypeId = 3, BankId = 2},
+                new Account() {Id = 7, Deposit = 3000, AccountTypeId = 1, BankId = 3},
+                new Account() {Id = 8, Deposit = 300, AccountTypeId = 2, BankId = 3},
+                new Account() {Id = 9, Deposit = 35000, AccountTypeId = 3, BankId = 3}
+            };
+
+            modelBuilder.Entity<Account>().HasData(accountList);
             
             base.OnModelCreating(modelBuilder);
         }
